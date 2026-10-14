@@ -14,6 +14,7 @@ export interface UseLoginReturn {
 	loginSuccess: boolean;
 	showPassword: boolean;
 	toggleShowPassword: () => void;
+	dismissError: () => void;
 	onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
 }
 
@@ -72,6 +73,7 @@ export function useLogin(): UseLoginReturn {
 		loginSuccess,
 		showPassword,
 		toggleShowPassword: () => setShowPassword((prev) => !prev),
+		dismissError: () => setLoginError(null),
 		onSubmit,
 	};
 }
