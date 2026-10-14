@@ -46,7 +46,12 @@
   --text-2xs: 0.625rem;
   --text-2xs--line-height: 0.875rem;
 
-  /* Resoluciones y Pantallas Comerciales POS */
+  /* Resoluciones y Pantallas Estándar y POS */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
   --breakpoint-pos-compact: 1024px;
   --breakpoint-pos-hd: 1366px;
   --breakpoint-pos-fhd: 1920px;
