@@ -1,26 +1,142 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── 1. EXTENSIÓN OFICIAL DEL TEMA TAILWIND V4 (@theme) ───
+   Al declarar aquí las variables, Tailwind genera automáticamente todas las clases utilitarias:
+   bg-brand-primary, text-brand-primary, border-brand-primary, hover:bg-brand-primary-dark,
+   bg-canvas, bg-surface, bg-checkout, text-credit, font-heading, etc.
+*/
+@theme {
+  /* Identidad Institucional UniPutumayo (Res. 0565) */
+  --color-brand-primary: #18668F;
+  --color-brand-primary-dark: #0F4A6B;
+  --color-brand-primary-light: #2A8AB8;
+  --color-brand-secondary: #80BF1F;
+  --color-brand-accent: #F5A51D;
+  --color-brand-neutral: #595957;
+
+  /* Superficies y Bordes Operativos */
+  --color-canvas: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-subtle: #F1F5F9;
+  --color-border-default: #E2E8F0;
+  --color-border-hover: #CBD5E1;
+
+  /* Superficie Hero Comercial */
+  --color-hero-from: #EBF4F3;
+  --color-hero-via: #DFEFF1;
+  --color-hero-to: #D5EBF0;
+
+  /* Jerarquía de Textos Slate */
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748B;
+
+  /* Semántica Transaccional POS */
+  --color-checkout: #059669;
+  --color-credit: #7C3AED;
+  --color-warning: #D97706;
+  --color-danger: #DC2626;
+
+  /* Fuentes Google Oficiales */
+  --font-heading: var(--font-heading, 'Raleway', sans-serif);
+  --font-body: var(--font-body, 'Fira Sans', sans-serif);
+  --font-mono: var(--font-mono, 'JetBrains Mono', monospace);
+
+  /* Escala Tipográfica Extendida Oficial */
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 0.875rem;
+
+  /* Resoluciones y Pantallas Comerciales POS */
+  --breakpoint-pos-compact: 1024px;
+  --breakpoint-pos-hd: 1366px;
+  --breakpoint-pos-fhd: 1920px;
+
+  /* Radios Semánticos de Tarjetas y Contenedores */
+  --radius-card: 2.5rem;
+  --radius-card-sm: 2rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── 2. ESTILOS BASE GLOBALES ─── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+/* ─── 3. UTILIDADES PERSONALIZADAS ESTÁNDAR TAILWIND V4 (@utility) ───
+   Al usar @utility, Tailwind v4 permite combinarlas con variantes:
+   hover:surface-glass, focus:glow-checkout, md:bg-ambient-canvas, etc.
+*/
+
+/* Fondo con Malla de Degradados Difuminados (Mesh Gradient) */
+@utility bg-ambient-canvas {
+  background-color: #F8FAFC;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(24, 102, 143, 0.05) 0px, transparent 55%),
+    radial-gradient(at 100% 0%, rgba(128, 191, 31, 0.04) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(245, 165, 29, 0.03) 0px, transparent 60%);
+}
+
+/* Superficie de Vidrio Esmerilado (Glassmorphism sutil no-plano) */
+@utility surface-glass {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 
+    0 4px 6px -1px rgba(15, 23, 42, 0.03),
+    0 10px 15px -3px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+/* Resplandor Ambiental Difuso para Acciones Clave */
+@utility glow-checkout {
+  box-shadow: 0 4px 20px -2px rgba(5, 150, 105, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@utility glow-checkout-hover {
+  box-shadow: 0 6px 24px -2px rgba(5, 150, 105, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Números Tabulares Estrictos para Contabilidad */
+@utility tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Micro-Scrollbar Suave */
+@utility custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(203, 213, 225, 0.6) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(203, 213, 225, 0.6);
+    border-radius: 9999px;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.85);
+  }
+}
+
+/* Desvanecimiento al pie de listas con scroll */
+@utility scroll-fade-bottom {
+  mask-image: linear-gradient(to bottom, black calc(100% - 28px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 28px), transparent 100%);
 }
