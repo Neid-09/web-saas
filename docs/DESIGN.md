@@ -121,11 +121,28 @@ Optimizado para resoluciones comerciales estándar (**1366×768 px** hasta **192
 
 ---
 
-## 4. Referencias Rápidas y Reglas de Desarrollo
+## 4. Patrón de Feedback Asíncrono y Notificaciones Transversales (Toast UI)
+
+Para garantizar la estabilidad visual y cumplir con los estándares de rendimiento Core Web Vitals (**CLS = 0.00**):
+
+1. **Prohibición de Banners Dinámicos:** Prohibido insertar alertas o banners inline en formularios o en el mostrador POS que empujen los elementos o alteren la posición de botones e inputs.
+2. **Componente Estándar:** Todo mensaje de confirmación, advertencia o fallo de servidor debe emitirse mediante el componente compartido:
+   `import { Toast } from '@/shared/ui/toast';`
+3. **Comportamiento Físico:** El Toast flota desacoplado (`top-5 right-6 z-50`), entra deslizándose horizontalmente de derecha a izquierda, se auto-cierra en 5 segundos y se retira suavemente de izquierda a derecha en 350ms.
+4. **Semántica:**
+   * `error`: Rojo `danger` (`#DC2626`) para fallos de red o transacciones denegadas.
+   * `success`: Verde `checkout` (`#059669`) para ventas cerradas y guardados confirmados.
+   * `warning`: Ámbar `warning` (`#D97706`) para advertencias de inventario o cupos fiados.
+   * `info`: Azul `brand-primary` (`#18668F`) para información de turnos y sincronización.
+
+---
+
+## 5. Referencias Rápidas y Reglas de Desarrollo
 
 Para la implementación de componentes y vistas, seguir las reglas de negocio establecidas:
 
 * **Colores y Contrastes:** Consultar siempre [`docs/identidad-visual/COLORIMETRIA.md`](file:///c:/dev-proyects/diplomado/web-diplomado/docs/identidad-visual/COLORIMETRIA.md).
 * **Tipografías y `tabular-nums`:** Consultar siempre [`docs/identidad-visual/TIPOGRAFIA.md`](file:///c:/dev-proyects/diplomado/web-diplomado/docs/identidad-visual/TIPOGRAFIA.md).
+* **Feedback y Notificaciones UI:** Consultar siempre [`.agents/rules/ui-feedback.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/ui-feedback.md).
 * **Estructura de Archivos y Módulos:** Consultar [`.agents/rules/project-structure.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/project-structure.md).
 * **Enrutamiento y RBAC:** Consultar [`.agents/rules/nextjs-routing.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/nextjs-routing.md).

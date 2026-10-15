@@ -86,6 +86,7 @@ Si un agente o desarrollador tiene dudas sobre diseño, colores, fuentes, layout
 | **Enrutamiento y RBAC** | Reglas de rutas, Route Groups y middleware | [`.agents/rules/nextjs-routing.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/nextjs-routing.md) |
 | **Obtención de Datos (Fetching)** | Web Fetch, streaming, idempotencia y mocks | [`.agents/rules/data-fetching.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/data-fetching.md) |
 | **Procedimientos Paso a Paso** | Skill de creación de páginas y optimización | [`.agents/skills/nextjs-routing-navigation/SKILL.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/skills/nextjs-routing-navigation/SKILL.md) |
+| **Feedback y Alertas UI** | Regla obligatoria de Toasts y Notificaciones | [`.agents/rules/ui-feedback.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/ui-feedback.md) |
 | **Auditoría Técnica Backend E1** | Diagnóstico del Core Auth, endpoints y JWT de Squad 1 | [`docs/AUDITORIA_TECNICA_COMPLETA_SQUAD1.md`](file:///c:/dev-proyects/diplomado/web-diplomado/docs/AUDITORIA_TECNICA_COMPLETA_SQUAD1.md) |
 
 ---
@@ -96,4 +97,5 @@ Si un agente o desarrollador tiene dudas sobre diseño, colores, fuentes, layout
 2. **Priorizar el Rendimiento:** No añadir librerías pesadas (ej. Axios, Lodash, Moment.js). Usar las APIs nativas de Next.js, Web Fetch y JavaScript moderno.
 3. **Respetar la Ergonomía del Mostrador:** En cualquier vista del POS (`/pos`), priorizar la navegación con teclado (`F1` a `F12`, `Esc`), atajos visibles en `<kbd>`, retroalimentación sonora sutil y cero dependencias obligatorias del ratón.
 4. **Cero Clases Arbitrarias de Tailwind:** Prohibido terminantemente escribir valores en corchetes como `bg-[#...]` o `text-[#...]`. Todo color, borde y fondo debe consumirse a través de los tokens semánticos definidos en `@theme` (`bg-brand-primary`, `bg-brand-secondary`, `bg-checkout`, etc.).
+5. **Cero Desplazamiento de Layout en Feedback (CLS = 0):** Prohibido insertar banners inline que empujen formularios o tablas. Todo mensaje de fallo, confirmación o alerta de servidor debe utilizar el componente compartido transversal `@/shared/ui/toast`.
 
