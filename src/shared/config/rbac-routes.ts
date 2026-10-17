@@ -53,6 +53,6 @@ export const ROLE_HOME_REDIRECT: Record<UserRole, string> = {
 	CASHIER: "/pos",
 	OWNER: "/dashboard",
 	ADMIN: "/dashboard",
-	ACCOUNTANT: "/dashboard/accounting",
-	WAREHOUSE_MANAGER: "/dashboard/inventory",
+	ACCOUNTANT: "/dashboard",
+	WAREHOUSE_MANAGER: "/dashboard",
 };

@@ -38,7 +38,7 @@ export async function setSessionCookies(t: {
 	const store = await cookies();
 	store.set(AUTH_TOKEN_KEY, t.access, {
 		...base,
-		maxAge: t.maxAge ?? 60 * 15, // 15 minutos por defecto para el access token
+		maxAge: t.maxAge ?? 60 * 60 * 8, // 8 horas por defecto (alineado con la sesión de E1 en Redis)
 	});
 	if (t.refresh) {
 		store.set(REFRESH_TOKEN_KEY, t.refresh, {
