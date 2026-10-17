@@ -20,7 +20,6 @@ export class InMemoryAuthRepository implements AuthRepository {
     }
     const session: UserSession = {
       id: 'mock-user-id-001',
-      email: credentials.email,
       fullName: 'Usuario Mock de Pruebas',
       role: 'ADMIN',
       tenantId: 'mock-tenant-001',

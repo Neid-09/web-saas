@@ -17,8 +17,8 @@ export interface Squad1MeResponse {
 	role: string;
 	tenantName: string;
 	branchName: string;
-	tenantId: string;
-	branchId: string;
+	tenantId?: string;
+	branchId?: string;
 }
 
 /**
@@ -26,7 +26,6 @@ export interface Squad1MeResponse {
  */
 export function mapLoginResponseToDomain(
 	response: Squad1LoginResponse,
-	email: string,
 ): LoginResult {
 	return {
 		tokens: {
@@ -35,7 +34,6 @@ export function mapLoginResponseToDomain(
 		},
 		session: {
 			id: response.user.id,
-			email,
 			role: response.user.role as UserRole,
 			tenantId: response.user.tenantId,
 			branchId: response.user.branchId,
@@ -49,14 +47,13 @@ export function mapLoginResponseToDomain(
 export function mapMeResponseToDomain(
 	response: Squad1MeResponse,
 	userId: string,
-	email: string,
+	tenantId: string,
 ): UserSession {
 	return {
 		id: userId,
-		email,
 		fullName: response.fullName,
 		role: response.role as UserRole,
-		tenantId: response.tenantId,
+		tenantId: response.tenantId ?? tenantId,
 		branchId: response.branchId,
 		tenantName: response.tenantName,
 		branchName: response.branchName,
