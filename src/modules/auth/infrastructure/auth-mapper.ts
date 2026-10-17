@@ -1,4 +1,5 @@
-import { UserRole, UserSession } from "../domain/auth.types";
+import type { UserRole } from "../domain/user-role";
+import type { UserSession } from "../domain/auth.types";
 import { LoginResult } from "../application/auth.types";
 
 export interface Squad1LoginResponse {

@@ -1,7 +1,8 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { UserSession, UserRole } from "@/modules/auth/domain/auth.types";
+import type { UserSession } from "@/modules/auth/domain/auth.types";
+import type { UserRole } from "@/modules/auth/domain/user-role";
 
 interface SessionContextValue {
 	session: UserSession | null;

@@ -2,7 +2,7 @@ import {
 	ROUTE_PERMISSIONS,
 	ROLE_HOME_REDIRECT,
 } from "@/shared/config/rbac-routes";
-import type { UserRole } from "@/modules/auth/domain/auth.types";
+import type { UserRole } from "@/modules/auth/domain/user-role";
 
 const matches = (path: string, prefix: string) =>
 	path === prefix || path.startsWith(prefix + "/");

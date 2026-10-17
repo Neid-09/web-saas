@@ -1,7 +1,8 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import { getSession } from "./session";
-import type { UserRole, UserSession } from "@/modules/auth/domain/auth.types";
+import type { UserRole } from "@/modules/auth/domain/user-role";
+import type { UserSession } from "@/modules/auth/domain/auth.types";
 
 export async function requireRole(
 	allowedRoles: UserRole[],

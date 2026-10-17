@@ -1,4 +1,4 @@
-import { UserRole } from "@/modules/auth/domain/auth.types";
+import type { UserRole } from "@/modules/auth/domain/user-role";
 
 export interface RoutePermissionRule {
 	pathPrefix: string;

@@ -2,7 +2,8 @@
 
 import { useCallback } from "react";
 import { useSession } from "../session-provider";
-import type { UserRole, UserSession } from "@/modules/auth/domain/auth.types";
+import type { UserRole } from "@/modules/auth/domain/user-role";
+import type { UserSession } from "@/modules/auth/domain/auth.types";
 
 export interface AuthorizationState {
 	session: UserSession | null;

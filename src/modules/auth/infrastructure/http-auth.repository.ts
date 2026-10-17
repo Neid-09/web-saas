@@ -6,7 +6,8 @@ import {
 } from "@/shared/utils/cookies";
 import { decodeJwtPayload } from "@/shared/utils/jwt";
 import { AuthRepository } from "../domain/auth.repository";
-import { UserSession, isUserRole } from "../domain/auth.types";
+import { UserSession } from "../domain/auth.types";
+import { isUserRole } from "../domain/user-role";
 import { InvalidCredentialsError } from "../domain/auth.errors";
 import { LoginCredentials, LoginResult } from "../application/auth.types";
 import {
