@@ -1,6 +1,11 @@
----
+﻿---
 description: Regla estricta que prohíbe el uso de valores arbitrarios en corchetes para Tailwind CSS (ej. bg-[#...], text-[#...], w-[...], etc.), obligando a usar tokens semánticos definidos en @theme.
-globs: ["src/**/*.{tsx,jsx,ts,js,css}"]
+globs:
+  - src/**/*.tsx
+  - src/**/*.jsx
+  - src/**/*.ts
+  - src/**/*.js
+  - src/**/*.css
 alwaysApply: true
 ---
 

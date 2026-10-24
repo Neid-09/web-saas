@@ -88,6 +88,7 @@ Si un agente o desarrollador tiene dudas sobre diseño, colores, fuentes, layout
 | **Procedimientos Paso a Paso** | Skill de creación de páginas y optimización | [`.agents/skills/nextjs-routing-navigation/SKILL.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/skills/nextjs-routing-navigation/SKILL.md) |
 | **Feedback y Alertas UI** | Regla obligatoria de Toasts y Notificaciones | [`.agents/rules/ui-feedback.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/ui-feedback.md) |
 | **Semántica HTML5 y Divitis** | Reglas obligatorias de estructura HTML5 y accesibilidad | [`.agents/rules/html-semantica.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/html-semantica.md) |
+| **React Declarativo (Cero `useEffect` en UI)** | Prohibición de `useEffect` en modales, dropdowns y reseteos | [`.agents/rules/react-declarative-ui.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/react-declarative-ui.md) |
 | **Auditoría Técnica Backend E1** | Diagnóstico del Core Auth, endpoints y JWT de Squad 1 | [`docs/AUDITORIA_TECNICA_COMPLETA_SQUAD1.md`](file:///c:/dev-proyects/diplomado/web-diplomado/docs/AUDITORIA_TECNICA_COMPLETA_SQUAD1.md) |
 
 ---
@@ -100,5 +101,6 @@ Si un agente o desarrollador tiene dudas sobre diseño, colores, fuentes, layout
 4. **Cero Clases Arbitrarias de Tailwind:** Prohibido terminantemente escribir valores en corchetes como `bg-[#...]` o `text-[#...]`. Todo color, borde y fondo debe consumirse a través de los tokens semánticos definidos en `@theme` (`bg-brand-primary`, `bg-brand-secondary`, `bg-checkout`, etc.).
 5. **Cero Desplazamiento de Layout en Feedback (CLS = 0):** Prohibido insertar banners inline que empujen formularios o tablas. Todo mensaje de fallo, confirmación o alerta de servidor debe utilizar el componente compartido transversal `@/shared/ui/toast`.
 6. **Semántica HTML5 y Tolerancia Cero a la Divitis:** Prohibido usar `<div>` para elementos estructurales (páginas, tarjetas, barras de navegación o listas). Toda vista debe emplear `<main>`, `<header>`, `<footer>`, `<nav>`, `<section>`, `<aside>` y `<ul role="list">`/`<ol>` para colecciones, preservando un único `<h1>` representativo por documento.
+7. **React Declarativo y Cero `useEffect` en UI:** Prohibido terminantemente usar `useEffect` para controlar la interactividad de modales, popovers, dropdowns o reseteo de formularios. Toda apertura, cierre (clic afuera con Backdrop declarativo y `onKeyDown` para Escape) y reseteo (desmontaje natural condicional) debe resolverse de forma puramente declarativa con el ciclo de vida y eventos sintéticos nativos de React.
 
 

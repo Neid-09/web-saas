@@ -1,6 +1,9 @@
----
+﻿---
 description: Reglas obligatorias para la estructura de carpetas, arquitectura hexagonal modular (Vertical Slicing) y separación estricta de responsabilidades en el frontend.
-globs: ["src/**/*", "package.json", "tsconfig.json"]
+globs:
+  - src/**/*
+  - package.json
+  - tsconfig.json
 alwaysApply: true
 ---
 

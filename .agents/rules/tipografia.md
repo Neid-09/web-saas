@@ -1,6 +1,15 @@
----
+﻿---
 description: Reglas obligatorias para la jerarquía tipográfica, escala estándar de tamaños de fuente, fuentes oficiales y alineación de números tabulares en el frontend.
-globs: ["src/app/**/*.{tsx,jsx,css}", "src/modules/**/*.{tsx,jsx,css}", "src/shared/**/*.{tsx,jsx,css}"]
+globs:
+  - src/app/**/*.tsx
+  - src/app/**/*.jsx
+  - src/app/**/*.css
+  - src/modules/**/*.tsx
+  - src/modules/**/*.jsx
+  - src/modules/**/*.css
+  - src/shared/**/*.tsx
+  - src/shared/**/*.jsx
+  - src/shared/**/*.css
 alwaysApply: true
 ---
 

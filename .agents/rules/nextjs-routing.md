@@ -1,6 +1,10 @@
----
+﻿---
 description: Reglas obligatorias para la arquitectura, estructuración de rutas, navegación y control de acceso en Next.js 15 App Router.
-globs: ["src/app/**/*", "src/middleware.ts", "middleware.ts", "src/modules/**/components/**/*"]
+globs:
+  - src/app/**/*
+  - src/middleware.ts
+  - middleware.ts
+  - src/modules/**/components/**/*
 alwaysApply: true
 ---
 

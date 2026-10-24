@@ -1,6 +1,15 @@
----
+﻿---
 description: Reglas obligatorias para el uso de colorimetría, tokens y paletas cromáticas en el desarrollo de la interfaz de usuario.
-globs: ["src/app/**/*.{tsx,jsx,css}", "src/modules/**/*.{tsx,jsx,css}", "src/shared/**/*.{tsx,jsx,css}"]
+globs:
+  - src/app/**/*.tsx
+  - src/app/**/*.jsx
+  - src/app/**/*.css
+  - src/modules/**/*.tsx
+  - src/modules/**/*.jsx
+  - src/modules/**/*.css
+  - src/shared/**/*.tsx
+  - src/shared/**/*.jsx
+  - src/shared/**/*.css
 alwaysApply: true
 ---
 
