@@ -1,121 +1,81 @@
-﻿---
-description: Reglas obligatorias para la arquitectura, estructuración de rutas, navegación y control de acceso en Next.js 15 App Router.
+---
+description: Reglas obligatorias para la arquitectura, estructuración de rutas, navegación modular y control de acceso en Next.js 16 App Router.
 globs:
   - src/app/**/*
-  - src/middleware.ts
-  - middleware.ts
-  - src/modules/**/components/**/*
+  - src/shared/config/rbac-routes.ts
+  - src/shared/layouts/**/*
+  - src/modules/**/ui/*.nav.ts
 alwaysApply: true
 ---
 
-# Reglas de Enrutamiento y Navegación — Next.js 15 App Router
+# Reglas Maestras de Enrutamiento, Navegación y RBAC — Next.js 16 App Router
 
-Este documento define las directrices y estándares obligatorios de arquitectura para el enrutamiento y la navegación en el frontend del SaaS Contable y POS (Squad 4).
-
----
-
-## 1. Prohibición Estricta de Librerías Externas de Enrutamiento
-- **PROHIBIDO** instalar o importar `react-router`, `react-router-dom` o cualquier otro enrutador externo.
-- Todo el enrutamiento debe ser gestionado **exclusivamente por el App Router nativo de Next.js 15** basado en el sistema de archivos (`src/app/`).
+Este documento define las directrices y estándares obligatorios de arquitectura para el enrutamiento, la navegación modular y el control de acceso en el frontend del SaaS Contable y POS (Squad 4).
 
 ---
 
-## 2. Convenciones de Importación
-- **Navegación imperativa:** Importar `useRouter`, `usePathname`, `useSearchParams` exclusivamente desde `'next/navigation'`.
-  ```typescript
-  // CORRECTO
-  import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+## 1. Las 4 Leyes Mandatorias para Dar de Alta Rutas
 
-  // PROHIBIDO (pertenece al Pages Router obsoleto)
-  import { useRouter } from 'next/router';
-  ```
-- **Enlaces declarativos:** Usar siempre el componente `<Link>` de `'next/link'`.
-  ```typescript
-  import Link from 'next/link';
-  ```
-  Evitar el uso de etiquetas `<a>` crudas para navegación interna, ya que provocan recargas completas de página (Full Page Reload) y destruyen el estado en memoria de Zustand.
+### Ley 1: Cero Rutas Fantasma (Principio YAGNI Estricto)
+* **PROHIBIDO TERMINANTEMENTE** registrar prefijos de ruta en `ROUTE_PERMISSIONS` o añadir enlaces en la navegación si la carpeta física en `src/app/` y su archivo `page.tsx` no existen.
+* Toda ruta visible en el Sidebar o declarada en la matriz de seguridad debe ser 100% navegable en tiempo real y libre de errores 404.
 
----
+### Ley 2: Terna Obligatoria de Robustez
+Toda ruta en `src/app/(dashboard)/...` debe constar obligatoriamente de sus tres (3) archivos de resiliencia:
+1. **`page.tsx` (Thin Page):** Server Component de menos de 20 líneas que valida la sesión y autorización en el servidor con `await requireRole(rolesFor('/ruta'), '/ruta')` y monta la vista del módulo.
+2. **`loading.tsx` (Skeleton UI):** Estado de carga obligatorio con Skeleton accesible (`role="status"`, `animate-pulse`) que replique exactamente las dimensiones del lienzo para garantizar **CLS = 0**.
+3. **`error.tsx` (Error Boundary):** Client Component (`'use client'`) con `role="alert"`, reporte descriptivo y botón accesible de reintento (`reset()`).
 
-## 3. Integración con Arquitectura Modular: Páginas Delgadas (*Thin Pages*)
-- Los archivos `page.tsx` en `src/app/` son **adaptadores de entrada delgados**.
-- **PROHIBIDO** colocar lógica de negocio compleja, estado de Zustand o tablas extensas directamente en `src/app/**/page.tsx`.
-- Cada `page.tsx` debe delegar inmediatamente en el componente de vista principal del módulo correspondiente dentro de `src/modules/<feature>/ui/components/`:
-  ```tsx
-  // src/app/(dashboard)/team/page.tsx
-  import { UsersManagementView } from '@/modules/users/ui/components/users-management-view';
+### Ley 3: Navegación Modular Descentralizada
+* **PROHIBIDO** editar archivos monolíticos de datos para agregar botones al menú lateral.
+* Cada módulo funcional es soberano de su navegación y debe exportar su contribución en `src/modules/<feature>/ui/<feature>.nav.ts` implementando el contrato `ModuleNavContribution`.
+* El montaje se realiza exclusivamente en una sola línea dentro del array `ACTIVE_NAV_MODULES` en `src/shared/layouts/admin/nav/manifest.ts`.
+* La resolución del menú en caliente debe mantenerse en **complejidad $O(1)$** mediante el caché en memoria de `src/shared/layouts/admin/nav/config.ts`.
 
-  export const metadata = { title: 'Personal y Colaboradores | Admin' };
-
-  export default function TeamPage() {
-    return <UsersManagementView />;
-  }
-  ```
+### Ley 4: Sincronización Estricta de Seguridad (RBAC)
+* Todo nuevo prefijo de ruta administrativa debe registrarse en la matriz `ROUTE_PERMISSIONS` de `src/shared/config/rbac-routes.ts` con sus roles permitidos (`allowedRoles`).
+* Los roles permitidos en el archivo `<feature>.nav.ts` deben coincidir exactamente con los declarados en `ROUTE_PERMISSIONS`.
 
 ---
 
-## 4. Organización por Route Groups (Grupos de Rutas)
-Para separar las responsabilidades visuales y de layout sin afectar la estructura de las URLs, el proyecto se divide en:
+## 2. Convenciones de Importación y Enrutamiento Nativo
+* **PROHIBIDO** instalar o importar `react-router`, `react-router-dom` o cualquier otro enrutador externo. Se usa exclusivamente el App Router nativo de Next.js 16 basado en el sistema de archivos (`src/app/`).
+* **Navegación imperativa:** Importar `useRouter`, `usePathname`, `useSearchParams` exclusivamente desde `'next/navigation'`. (Prohibido `'next/router'`).
+* **Enlaces declarativos:** Usar siempre el componente `<Link>` de `'next/link'`. Prohibido usar etiquetas `<a>` crudas para navegación interna (provocan recargas completas y destruyen el estado en memoria de Zustand).
 
+---
+
+## 3. Arquitectura Hexagonal y Thin Pages
+* Los archivos `page.tsx` en `src/app/` actúan únicamente como adaptadores de entrada delgados del framework.
+* **PROHIBIDO** colocar lógica de negocio compleja, llamadas a repositorios o estado interactivo directamente en `src/app/**/page.tsx`.
+* Cada `page.tsx` delega inmediatamente en los componentes o vistas del módulo dentro de `src/modules/<feature>/ui/components/`.
+
+---
+
+## 4. Organización por Route Groups
+Para separar las responsabilidades visuales y de layout sin afectar las URLs:
 1. **`src/app/(auth)/`**: Flujo de inicio de sesión público y onboarding.
-   - Layout minimalista centrado, sin barras laterales ni distracciones.
-   - Rutas: `/login`, `/onboarding/branch`.
-2. **`src/app/(dashboard)/`**: Panel administrativo y backoffice (`OWNER`, `ADMIN`, `ACCOUNTANT`, `WAREHOUSE_MANAGER`).
-   - Layout persistente con Sidebar lateral, Topbar con datos del tenant y avatar de sesión.
-   - Rutas: `/dashboard`, `/dashboard/team`, `/dashboard/branches`, `/dashboard/company`, `/dashboard/inventory`.
+   - Layout minimalista centrado, sin barras laterales.
+2. **`src/app/(dashboard)/`**: Panel administrativo y backoffice.
+   - Envuelto por `AdminShell` desde `@/shared/layouts` con Topbar y Sidebar persistentes.
+   - Soporta discriminación polimórfica en `/dashboard` según el rol autenticado.
 3. **`src/app/(pos)/`**: Mostrador de venta rápida (<10s) para cajeros (`CASHIER`).
-   - Layout a pantalla completa (Full Viewport) a 60 FPS, sin navegación externa.
-   - Rutas: `/pos`.
+   - Layout a pantalla completa (Full Viewport) a 60 FPS, sin navegación externa ni sidebar administrativo.
 
 ---
 
-## 5. Convención de Archivos Especiales y Jerarquía de Robustez
-Toda ruta funcional debe contener la combinación requerida para cumplir con los estándares de robustez:
-- **`layout.tsx`**: Envoltura persistente de interfaz compartida. No se re-renderiza al navegar entre rutas hermanas.
-- **`page.tsx`**: Contenido de la ruta.
-- **`loading.tsx`**: Estado de carga obligatorio con Skeleton UI renderizado vía React Suspense nativo.
-- **`error.tsx`**: Error Boundary obligatorio con directiva `'use client'` y función de reintento (`reset()`).
-- **`not-found.tsx`**: Vista personalizada para recursos o rutas inexistentes (404).
-
----
-
-## 6. Manejo de Modales en el Enrutamiento
-- **Modales de Operación Rápida (En Memoria):**
-  - Modales como Búsqueda rápida de producto (`F2`) y Cobro (`F9`/`F10`) en el POS se controlan mediante estado en memoria/Zustand dentro de `src/modules/pos/components/`. **No cambian la URL** para asegurar latencias inferiores a 16 ms.
-- **Modales de Detalle Administrativo (Intercepted Routes):**
-  - Si un modal requiere URL compartible o navegación atrás/adelante en el historial (ej: ver ficha de auditoría de un usuario), se implementa mediante la convención de rutas interceptadas de Next.js: `src/app/(dashboard)/team/(.)[id]/page.tsx`.
-
----
-
-## 7. Parámetros Asíncronos en Next.js 15 (`params` y `searchParams`)
-En Next.js 15, `params` y `searchParams` en componentes de servidor son **Promesas**:
+## 5. Parámetros Asíncronos en Next.js 16 (`params` y `searchParams`)
+En Next.js 16, `params` y `searchParams` en componentes de servidor son **Promesas asíncronas obligatorias**:
 ```tsx
-// CORRECTO en Next.js 15
-export default async function UserDetailPage({
-  params,
-}: {
+// CORRECTO en Next.js 16
+interface PageProps {
   params: Promise<{ id: string }>;
-}) {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function FeatureDetailPage({ params, searchParams }: PageProps) {
   const { id } = await params;
-  return <UserDetailView userId={id} />;
+  const query = await searchParams;
+  return <FeatureDetailView id={id} query={query} />;
 }
 ```
-
----
-
-## 8. Middleware y Protección RBAC de Rutas (`middleware.ts`)
-- El control de acceso, redirección por roles y verificación de sesión debe realizarse en `middleware.ts` en la raíz del proyecto.
-- **Reglas del guardia:**
-  1. Si la ruta es protegida y no existe cookie `accessToken` $\rightarrow$ Redirigir a `/login`.
-  2. Si el usuario tiene rol `CASHIER` e intenta acceder a `/dashboard/*` $\rightarrow$ Redirigir inmediatamente a `/pos`.
-  3. Si el usuario tiene rol `OWNER` o `ADMIN` e intenta emitir en `/pos` $\rightarrow$ Redirigir a `/dashboard` o mostrar solo modo arqueo/supervisión.
-  4. Si el usuario ya está autenticado e intenta acceder a `/login` $\rightarrow$ Redirigir a su ruta por defecto (`/pos` o `/dashboard`).
-
----
-
-## 9. Rendimiento y Optimización de Navegación
-- **Prefetching inteligente:**
-  - El prefetching está habilitado por defecto en `<Link>`.
-  - En tablas masivas o listados largos (catálogo de más de 20 productos o facturas), **desactivar explícitamente el prefetch** con `prefetch={false}` para evitar congestión de red.
-- **Sincronización de filtros y búsqueda:**
-  - Utilizar `useSearchParams()` en conjunto con `window.history.pushState` o `router.replace(..., { scroll: false })` para paginación y filtros en tiempo real sin reiniciar el scroll ni disparar parpadeos en pantalla.
