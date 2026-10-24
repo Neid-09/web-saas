@@ -50,3 +50,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
 		</div>
 	);
 }
+
+/** Alias semántico preferido para el cascarón administrativo general */
+export const AdminShell = DashboardShell;
+export type AdminShellProps = DashboardShellProps;
