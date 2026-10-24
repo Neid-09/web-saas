@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { requireRole } from "@/shared/auth/require-role";
 import { rolesFor } from "@/shared/config/rbac-routes";
 import { SessionProvider } from "@/shared/auth/session-provider";
+import { DashboardShell } from "@/shared/ui/dashboard";
 
 async function DashboardAuthBoundary({
 	children,
@@ -13,9 +14,7 @@ async function DashboardAuthBoundary({
 
 	return (
 		<SessionProvider session={session}>
-			<div className="dashboard-root min-h-screen bg-canvas text-text-primary">
-				{children}
-			</div>
+			<DashboardShell>{children}</DashboardShell>
 		</SessionProvider>
 	);
 }
