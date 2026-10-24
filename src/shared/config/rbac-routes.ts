@@ -17,18 +17,10 @@ export const ROUTE_PERMISSIONS: RoutePermissionRule[] = [
 		allowedRoles: ["CASHIER"],
 	},
 
-	// 2. Submódulos administrativos restringidos
+	// 2. Gestión Multi-Tenant de Plataforma: Exclusivo para rol OWNER
 	{
-		pathPrefix: "/dashboard/company",
+		pathPrefix: "/dashboard/tenants",
 		allowedRoles: ["OWNER"],
-	},
-	{
-		pathPrefix: "/dashboard/accounting",
-		allowedRoles: ["OWNER", "ACCOUNTANT"],
-	},
-	{
-		pathPrefix: "/dashboard/inventory",
-		allowedRoles: ["OWNER", "ADMIN", "WAREHOUSE_MANAGER"],
 	},
 
 	// 3. Panel administrativo general (E4 Backoffice)
