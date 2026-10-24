@@ -89,6 +89,9 @@ Si un agente o desarrollador tiene dudas sobre diseño, colores, fuentes, layout
 | **Feedback y Alertas UI** | Regla obligatoria de Toasts y Notificaciones | [`.agents/rules/ui-feedback.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/ui-feedback.md) |
 | **Semántica HTML5 y Divitis** | Reglas obligatorias de estructura HTML5 y accesibilidad | [`.agents/rules/html-semantica.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/html-semantica.md) |
 | **React Declarativo (Cero `useEffect` en UI)** | Prohibición de `useEffect` en modales, dropdowns y reseteos | [`.agents/rules/react-declarative-ui.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/react-declarative-ui.md) |
+| **Flujo Secuencial Atómico** | Regla obligatoria de micro-tareas y diffs pequeños | [`.agents/rules/sequential-atomic-workflow.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/rules/sequential-atomic-workflow.md) |
+| **Plantillas y Commits Atómicos** | Skill de procedimiento paso a paso y checklists | [`.agents/skills/sequential-atomic-workflow/SKILL.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/skills/sequential-atomic-workflow/SKILL.md) |
+| **Análisis de Swagger / OpenAPI** | Skill de ingesta de contratos, impacto, RBAC e issues | [`.agents/skills/swagger-feature-analysis/SKILL.md`](file:///c:/dev-proyects/diplomado/web-diplomado/.agents/skills/swagger-feature-analysis/SKILL.md) |
 | **Auditoría Técnica Backend E1** | Diagnóstico del Core Auth, endpoints y JWT de Squad 1 | [`docs/AUDITORIA_TECNICA_COMPLETA_SQUAD1.md`](file:///c:/dev-proyects/diplomado/web-diplomado/docs/AUDITORIA_TECNICA_COMPLETA_SQUAD1.md) |
 
 ---
@@ -102,5 +105,6 @@ Si un agente o desarrollador tiene dudas sobre diseño, colores, fuentes, layout
 5. **Cero Desplazamiento de Layout en Feedback (CLS = 0):** Prohibido insertar banners inline que empujen formularios o tablas. Todo mensaje de fallo, confirmación o alerta de servidor debe utilizar el componente compartido transversal `@/shared/ui/toast`.
 6. **Semántica HTML5 y Tolerancia Cero a la Divitis:** Prohibido usar `<div>` para elementos estructurales (páginas, tarjetas, barras de navegación o listas). Toda vista debe emplear `<main>`, `<header>`, `<footer>`, `<nav>`, `<section>`, `<aside>` y `<ul role="list">`/`<ol>` para colecciones, preservando un único `<h1>` representativo por documento.
 7. **React Declarativo y Cero `useEffect` en UI:** Prohibido terminantemente usar `useEffect` para controlar la interactividad de modales, popovers, dropdowns o reseteo de formularios. Toda apertura, cierre (clic afuera con Backdrop declarativo y `onKeyDown` para Escape) y reseteo (desmontaje natural condicional) debe resolverse de forma puramente declarativa con el ciclo de vida y eventos sintéticos nativos de React.
+8. **Desarrollo Secuencial y Atómico:** Prohibido generar módulos, pantallas completas o flujos multicapa en una sola respuesta. Toda funcionalidad debe descomponerse en un checklist previo de micro-tareas hexagonales (Dominio $\to$ Aplicación $\to$ Infraestructura $\to$ UI $\to$ App Router) y ejecutarse de a una micro-tarea a la vez, con diffs pequeños ($\le 50 - 80$ líneas), verificados y con propuesta de commit atómico.
 
 
