@@ -1,12 +1,6 @@
-﻿---
+---
 description: Reglas obligatorias para feedback, alertas, mensajes de error y notificaciones asíncronas en el SaaS y POS.
-globs:
-  - src/app/**/*.tsx
-  - src/app/**/*.jsx
-  - src/modules/**/*.tsx
-  - src/modules/**/*.jsx
-  - src/shared/**/*.tsx
-  - src/shared/**/*.jsx
+globs: "src/app/**/*.{tsx,jsx}, src/modules/**/*.{tsx,jsx}, src/shared/**/*.{tsx,jsx}"
 alwaysApply: true
 ---
 

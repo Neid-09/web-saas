@@ -1,10 +1,6 @@
 ---
 description: Reglas obligatorias para la arquitectura, estructuración de rutas, navegación modular y control de acceso en Next.js 16 App Router.
-globs:
-  - src/app/**/*
-  - src/shared/config/rbac-routes.ts
-  - src/shared/layouts/**/*
-  - src/modules/**/ui/*.nav.ts
+globs: "src/app/**/*, src/shared/config/rbac-routes.ts, src/shared/layouts/**/*, src/modules/**/ui/*.nav.ts"
 alwaysApply: true
 ---
 

@@ -1,10 +1,6 @@
-﻿---
+---
 description: Reglas obligatorias para la obtención de datos (Data Fetching), streaming, manejo de cache, idempotencia, resiliencia y clientes HTTP en Next.js 16 App Router bajo arquitectura hexagonal.
-globs:
-  - src/shared/http/**/*
-  - src/modules/**/infrastructure/**/*
-  - src/modules/**/application/**/*
-  - src/app/**/*
+globs: "src/shared/http/**/*, src/modules/**/infrastructure/**/*, src/modules/**/application/**/*, src/app/**/*"
 alwaysApply: true
 ---
 

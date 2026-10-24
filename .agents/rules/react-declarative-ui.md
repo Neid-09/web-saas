@@ -1,12 +1,6 @@
-﻿---
+---
 description: Reglas obligatorias para interacción declarativa en React, prohibición estricta de useEffect para interacciones de UI, modales, menús y sincronización de estado.
-globs:
-  - src/app/**/*.tsx
-  - src/app/**/*.jsx
-  - src/modules/**/*.tsx
-  - src/modules/**/*.jsx
-  - src/shared/**/*.tsx
-  - src/shared/**/*.jsx
+globs: "src/app/**/*.{tsx,jsx}, src/modules/**/*.{tsx,jsx}, src/shared/**/*.{tsx,jsx}"
 alwaysApply: true
 ---
 
