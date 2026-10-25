@@ -1,4 +1,4 @@
-import { Tenant } from "./tenant.entity";
+import { Tenant, CreateTenant } from "./tenant.entity";
 
 /**
  * Puerto de salida del repositorio de Empresas (Tenants).
@@ -14,4 +14,9 @@ export interface TenantRepositoryPort {
 	 * Recupera los datos de una empresa específica por su identificador único.
 	 */
 	findById(id: string): Promise<Tenant>;
+
+	/**
+	 * Registra una nueva empresa en el sistema.
+	 */
+	create(data: CreateTenant): Promise<Tenant>;
 }

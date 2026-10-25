@@ -1,11 +1,11 @@
 "use server";
 
 import { tenantsUseCases } from "@/modules/tenants/infrastructure/composition";
-import { TenantProps } from "@/modules/tenants/domain/tenant.entity";
+import { Tenant } from "@/modules/tenants/domain/tenant.entity";
 
 export interface GetTenantsActionResult {
 	success: boolean;
-	data?: TenantProps[];
+	data?: Tenant[];
 	error?: string;
 }
 
@@ -16,7 +16,7 @@ export interface GetTenantsActionResult {
 export async function getTenantsAction(): Promise<GetTenantsActionResult> {
 	try {
 		const tenants = await tenantsUseCases.getTenants();
-		const plainTenants: TenantProps[] = tenants.map((t) => ({
+		const plainTenants: Tenant[] = tenants.map((t) => ({
 			id: t.id,
 			nitRut: t.nitRut,
 			businessName: t.businessName,
@@ -29,6 +29,7 @@ export async function getTenantsAction(): Promise<GetTenantsActionResult> {
 			taxRegime: t.taxRegime,
 			isActive: t.isActive,
 			createdAt: t.createdAt,
+			displayName: t.displayName,
 		}));
 
 		return {

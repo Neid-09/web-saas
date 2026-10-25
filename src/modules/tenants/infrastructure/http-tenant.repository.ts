@@ -1,5 +1,5 @@
 import { httpClient, NotFoundError } from "@/shared/http";
-import { Tenant } from "../domain/tenant.entity";
+import { Tenant, CreateTenant } from "../domain/tenant.entity";
 import { TenantRepositoryPort } from "../domain/tenant.repository";
 import { TenantNotFoundError } from "../domain/tenant.errors";
 import { TenantMapper } from "./tenant.mapper";
@@ -37,5 +37,12 @@ export class HttpTenantRepository implements TenantRepositoryPort {
 			}
 			throw error;
 		}
+	}
+
+	/**
+	 * Registra una nueva empresa en el sistema (se conecta a la API en Micro-tarea 3).
+	 */
+	async create(_data: CreateTenant): Promise<Tenant> {
+		throw new Error("Method not implemented yet");
 	}
 }

@@ -9,21 +9,19 @@ export type TenantTaxRegime =
 	| "REGIMEN_ESPECIAL";
 
 /**
- * Propiedades inmutables de la entidad Tenant.
+ * Datos requeridos para dar de alta una nueva empresa en el dominio.
+ * Tipos TypeScript puros, libres de frameworks y librerías externas.
  */
-export interface TenantProps {
-	readonly id: string;
+export interface CreateTenant {
 	readonly nitRut: string;
 	readonly businessName: string;
 	readonly tradeName: string;
 	readonly address: string;
 	readonly phone: string;
 	readonly email: string;
-	readonly countryCode: string;
-	readonly currencyCode: string;
+	readonly countryCode?: string;
+	readonly currencyCode?: string;
 	readonly taxRegime?: TenantTaxRegime | null;
-	readonly isActive: boolean;
-	readonly createdAt: string;
 }
 
 /**
@@ -44,19 +42,19 @@ export class Tenant {
 	readonly isActive: boolean;
 	readonly createdAt: string;
 
-	constructor(props: TenantProps) {
-		this.id = props.id;
-		this.nitRut = props.nitRut;
-		this.businessName = props.businessName;
-		this.tradeName = props.tradeName;
-		this.address = props.address;
-		this.phone = props.phone;
-		this.email = props.email;
-		this.countryCode = props.countryCode;
-		this.currencyCode = props.currencyCode;
-		this.taxRegime = props.taxRegime ?? null;
-		this.isActive = props.isActive;
-		this.createdAt = props.createdAt;
+	constructor(data: Omit<Tenant, "displayName">) {
+		this.id = data.id;
+		this.nitRut = data.nitRut;
+		this.businessName = data.businessName;
+		this.tradeName = data.tradeName;
+		this.address = data.address;
+		this.phone = data.phone;
+		this.email = data.email;
+		this.countryCode = data.countryCode;
+		this.currencyCode = data.currencyCode;
+		this.taxRegime = data.taxRegime ?? null;
+		this.isActive = data.isActive;
+		this.createdAt = data.createdAt;
 	}
 
 	get displayName(): string {
