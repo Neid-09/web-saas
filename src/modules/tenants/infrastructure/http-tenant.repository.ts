@@ -1,8 +1,15 @@
-import { httpClient, NotFoundError } from "@/shared/http";
+import { httpClient, NotFoundError, ConflictError } from "@/shared/http";
 import { Tenant, CreateTenant } from "../domain/tenant.entity";
 import { TenantRepositoryPort } from "../domain/tenant.repository";
-import { TenantNotFoundError } from "../domain/tenant.errors";
+import {
+	TenantNotFoundError,
+	TenantAlreadyExistsError,
+} from "../domain/tenant.errors";
 import { TenantMapper } from "./tenant.mapper";
+import {
+	createTenantRequestSchema,
+	CreateTenantRequestDto,
+} from "./tenant.dto";
 
 /**
  * Adaptador de infraestructura HTTP que implementa `TenantRepositoryPort`
@@ -40,9 +47,34 @@ export class HttpTenantRepository implements TenantRepositoryPort {
 	}
 
 	/**
-	 * Registra una nueva empresa en el sistema (se conecta a la API en Micro-tarea 3).
+	 * Registra una nueva empresa en el sistema consumiendo POST /api/v1/tenants.
 	 */
-	async create(_data: CreateTenant): Promise<Tenant> {
-		throw new Error("Method not implemented yet");
+	async create(data: CreateTenant): Promise<Tenant> {
+		const requestPayload: CreateTenantRequestDto =
+			createTenantRequestSchema.parse({
+				nitRut: data.nitRut,
+				businessName: data.businessName,
+				tradeName: data.tradeName || data.businessName,
+				address: data.address || "",
+				phone: data.phone || "",
+				email: data.email,
+				countryCode: data.countryCode || "COL",
+				currencyCode: data.currencyCode || "COP",
+				taxRegime: data.taxRegime ?? null,
+			});
+
+		try {
+			const { data: responseData } = await httpClient.post<unknown>(
+				"/tenants",
+				requestPayload,
+			);
+
+			return TenantMapper.toDomain(responseData);
+		} catch (error) {
+			if (error instanceof ConflictError) {
+				throw new TenantAlreadyExistsError(error.message);
+			}
+			throw error;
+		}
 	}
 }

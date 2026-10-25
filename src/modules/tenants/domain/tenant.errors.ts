@@ -17,3 +17,16 @@ export class TenantNotFoundError extends TenantDomainError {
 		this.name = "TenantNotFoundError";
 	}
 }
+
+/**
+ * Se lanza cuando se intenta registrar una empresa cuyo NIT o correo ya existen en el sistema (Conflicto 409).
+ */
+export class TenantAlreadyExistsError extends TenantDomainError {
+	constructor(detail?: string) {
+		super(
+			detail ||
+				"Ya existe una empresa registrada con ese NIT/RUT o correo electrónico.",
+		);
+		this.name = "TenantAlreadyExistsError";
+	}
+}

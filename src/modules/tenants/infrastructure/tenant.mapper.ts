@@ -10,7 +10,12 @@ export class TenantMapper {
 	 * Transforma y valida un DTO crudo del backend en una Entidad pura de Dominio.
 	 */
 	static toDomain(raw: unknown): Tenant {
-		const parsed: TenantDto = tenantDtoSchema.parse(raw);
+		const unwrapped =
+			raw && typeof raw === "object" && "data" in raw && !("id" in raw)
+				? (raw as { data: unknown }).data
+				: raw;
+
+		const parsed: TenantDto = tenantDtoSchema.parse(unwrapped);
 
 		return new Tenant({
 			id: parsed.id,

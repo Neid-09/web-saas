@@ -1,6 +1,7 @@
 import { HttpTenantRepository } from "./http-tenant.repository";
 import { getTenantsUseCase } from "../application/get-tenants.use-case";
 import { getTenantByIdUseCase } from "../application/get-tenant-by-id.use-case";
+import { createTenantUseCase } from "../application/create-tenant.use-case";
 
 /**
  * COMPOSITION ROOT del módulo Tenants.
@@ -11,4 +12,5 @@ const tenantRepository = new HttpTenantRepository();
 export const tenantsUseCases = {
 	getTenants: getTenantsUseCase(tenantRepository),
 	getTenantById: getTenantByIdUseCase(tenantRepository),
+	createTenant: createTenantUseCase(tenantRepository),
 };
