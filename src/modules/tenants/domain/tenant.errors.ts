@@ -1,9 +1,11 @@
+import { DomainError } from "@/shared/domain/domain-error";
+
 /**
- * Error base del dominio de empresas.
+ * Error base del dominio de empresas (Tenants).
  */
-export class TenantDomainError extends Error {
-	constructor(message: string) {
-		super(message);
+export class TenantDomainError extends DomainError {
+	constructor(message: string, code = "TENANT_ERROR") {
+		super(message, code);
 		this.name = "TenantDomainError";
 	}
 }
@@ -13,7 +15,10 @@ export class TenantDomainError extends Error {
  */
 export class TenantNotFoundError extends TenantDomainError {
 	constructor(identifier: string) {
-		super(`La empresa con identificador "${identifier}" no fue encontrada.`);
+		super(
+			`La empresa con identificador "${identifier}" no fue encontrada.`,
+			"TENANT_NOT_FOUND",
+		);
 		this.name = "TenantNotFoundError";
 	}
 }
@@ -26,6 +31,7 @@ export class TenantAlreadyExistsError extends TenantDomainError {
 		super(
 			detail ||
 				"Ya existe una empresa registrada con ese NIT/RUT o correo electrónico.",
+			"TENANT_ALREADY_EXISTS",
 		);
 		this.name = "TenantAlreadyExistsError";
 	}

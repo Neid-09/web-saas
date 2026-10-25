@@ -18,6 +18,9 @@ export type CreateTenantActionResult = ActionResult<TenantPlain>;
  */
 export async function getTenantsAction(): Promise<GetTenantsActionResult> {
 	try {
+		// Verificación de autorización RBAC en el servidor (Defensa en profundidad)
+		await requireRole(rolesFor("/dashboard/tenants"), "/dashboard/tenants");
+
 		const tenants = await tenantsUseCases.getTenants();
 		return {
 			success: true,

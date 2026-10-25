@@ -15,8 +15,8 @@ export function useTenants() {
 		queryKey: tenantsKeys.lists(),
 		queryFn: async (): Promise<Tenant[]> => {
 			const res = await getTenantsAction();
-			if (!res.success || !res.data) {
-				throw new Error(res.error || "No fue posible cargar las empresas.");
+			if (!res.success) {
+				throw new Error(res.error);
 			}
 			return res.data.map((item) => new Tenant(item));
 		},

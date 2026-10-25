@@ -57,7 +57,7 @@ export class HttpTenantRepository implements TenantRepositoryPort {
 			return TenantMapper.toDomain(responseData);
 		} catch (error) {
 			if (error instanceof ConflictError) {
-				throw new TenantAlreadyExistsError(error.message);
+				throw new TenantAlreadyExistsError();
 			}
 			throw error;
 		}

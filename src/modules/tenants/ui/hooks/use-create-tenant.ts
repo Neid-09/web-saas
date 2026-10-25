@@ -44,8 +44,8 @@ export function useCreateTenant() {
 				tradeName: data.tradeName || data.businessName,
 			});
 
-			if (!res.success || !res.data) {
-				throw new Error(res.error || "No fue posible registrar la empresa.");
+			if (!res.success) {
+				throw new Error(res.error);
 			}
 
 			return new Tenant(res.data);

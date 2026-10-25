@@ -45,15 +45,15 @@ export function useLogin(): UseLoginReturn {
 			// Invoca el Server Action seguro: valida credenciales y resuelve safeRedirect en el servidor
 			const res = await loginAction(data, targetRedirect);
 
-			if (!res.success || !res.destination) {
-				setLoginError(res.error || "Ocurrió un error inesperado al iniciar sesión");
+			if (!res.success) {
+				setLoginError(res.error);
 				return;
 			}
 
 			setLoginSuccess(true);
 
 			setTimeout(() => {
-				router.push(res.destination!);
+				router.push(res.destination);
 			}, 700);
 		} catch (error) {
 			if (error instanceof Error) {
