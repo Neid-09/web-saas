@@ -1,13 +1,13 @@
 "use server";
 
 import { tenantsUseCases } from "@/modules/tenants/infrastructure/composition";
-import { Tenant } from "@/modules/tenants/domain/tenant.entity";
+import { Tenant, CreateTenant } from "@/modules/tenants/domain/tenant.entity";
+import { requireRole } from "@/shared/auth/require-role";
+import { rolesFor } from "@/shared/config/rbac-routes";
+import { handleActionError, ActionResult } from "@/shared/utils/action-error";
 
-export interface GetTenantsActionResult {
-	success: boolean;
-	data?: Tenant[];
-	error?: string;
-}
+export type GetTenantsActionResult = ActionResult<Tenant[]>;
+export type CreateTenantActionResult = ActionResult<Tenant>;
 
 /**
  * Server Action para consultar el listado de empresas desde componentes clientes.
@@ -37,13 +37,52 @@ export async function getTenantsAction(): Promise<GetTenantsActionResult> {
 			data: plainTenants,
 		};
 	} catch (error) {
-		console.error("❌ [getTenantsAction]", error);
-		return {
-			success: false,
-			error:
-				error instanceof Error
-					? error.message
-					: "Error al recuperar el directorio de empresas",
+		return handleActionError(
+			error,
+			"getTenantsAction",
+			"Error al recuperar el directorio de empresas",
+		);
+	}
+}
+
+/**
+ * Server Action para dar de alta una nueva empresa en el SaaS.
+ * Verifica estrictamente que el usuario posea rol OWNER en el servidor
+ * antes de invocar el caso de uso.
+ */
+export async function createTenantAction(
+	payload: CreateTenant,
+): Promise<CreateTenantActionResult> {
+	try {
+		// Verificación de autorización RBAC en el servidor
+		await requireRole(rolesFor("/dashboard/tenants"), "/dashboard/tenants");
+
+		const tenant = await tenantsUseCases.createTenant(payload);
+		const plainTenant: Tenant = {
+			id: tenant.id,
+			nitRut: tenant.nitRut,
+			businessName: tenant.businessName,
+			tradeName: tenant.tradeName,
+			address: tenant.address,
+			phone: tenant.phone,
+			email: tenant.email,
+			countryCode: tenant.countryCode,
+			currencyCode: tenant.currencyCode,
+			taxRegime: tenant.taxRegime,
+			isActive: tenant.isActive,
+			createdAt: tenant.createdAt,
+			displayName: tenant.displayName,
 		};
+
+		return {
+			success: true,
+			data: plainTenant,
+		};
+	} catch (error) {
+		return handleActionError(
+			error,
+			"createTenantAction",
+			"Ocurrió un error inesperado al registrar la empresa.",
+		);
 	}
 }
