@@ -6,10 +6,6 @@ import {
 	TenantAlreadyExistsError,
 } from "../domain/tenant.errors";
 import { TenantMapper } from "./tenant.mapper";
-import {
-	createTenantRequestSchema,
-	CreateTenantRequestDto,
-} from "./tenant.dto";
 
 /**
  * Adaptador de infraestructura HTTP que implementa `TenantRepositoryPort`
@@ -50,23 +46,12 @@ export class HttpTenantRepository implements TenantRepositoryPort {
 	 * Registra una nueva empresa en el sistema consumiendo POST /api/v1/tenants.
 	 */
 	async create(data: CreateTenant): Promise<Tenant> {
-		const requestPayload: CreateTenantRequestDto =
-			createTenantRequestSchema.parse({
-				nitRut: data.nitRut,
-				businessName: data.businessName,
-				tradeName: data.tradeName || data.businessName,
-				address: data.address || "",
-				phone: data.phone || "",
-				email: data.email,
-				countryCode: data.countryCode || "COL",
-				currencyCode: data.currencyCode || "COP",
-				taxRegime: data.taxRegime ?? null,
-			});
+		const payload = TenantMapper.toCreateDto(data);
 
 		try {
 			const { data: responseData } = await httpClient.post<unknown>(
 				"/tenants",
-				requestPayload,
+				payload,
 			);
 
 			return TenantMapper.toDomain(responseData);

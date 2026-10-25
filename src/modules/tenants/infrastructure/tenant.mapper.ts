@@ -1,9 +1,14 @@
-import { Tenant } from "../domain/tenant.entity";
-import { TenantDto, tenantDtoSchema } from "./tenant.dto";
+import { Tenant, CreateTenant } from "../domain/tenant.entity";
+import {
+	TenantDto,
+	tenantDtoSchema,
+	CreateTenantRequestDto,
+	createTenantRequestSchema,
+} from "./tenant.dto";
 
 /**
  * Mapper bidireccional entre la capa de infraestructura (DTOs externos)
- * y la capa de dominio pura (Entidad Tenant).
+ * y la capa de dominio pura (Entidad Tenant y CreateTenant).
  */
 export class TenantMapper {
 	/**
@@ -53,5 +58,22 @@ export class TenantMapper {
 		}
 
 		return rawList.map((item) => TenantMapper.toDomain(item));
+	}
+
+	/**
+	 * Transforma los datos de dominio al DTO de transporte que espera la API para POST /tenants.
+	 */
+	static toCreateDto(data: CreateTenant): CreateTenantRequestDto {
+		return createTenantRequestSchema.parse({
+			nitRut: data.nitRut,
+			businessName: data.businessName,
+			tradeName: data.tradeName || data.businessName,
+			address: data.address || "",
+			phone: data.phone || "",
+			email: data.email,
+			countryCode: data.countryCode || "COL",
+			currencyCode: data.currencyCode || "COP",
+			taxRegime: data.taxRegime ?? null,
+		});
 	}
 }
