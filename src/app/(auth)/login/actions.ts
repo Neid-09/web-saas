@@ -2,21 +2,16 @@
 
 import { z } from "zod";
 import { authUseCases } from "@/modules/auth/infrastructure/composition";
-import {
-	InvalidCredentialsError,
-	AuthDomainError,
-} from "@/modules/auth/domain/auth.errors";
 import { safeRedirect } from "@/shared/auth/safe-redirect";
+import { handleActionError, ActionResult } from "@/shared/utils/action-error";
 
 const credentialsSchema = z.object({
 	email: z.email("Correo electrónico inválido"),
 	password: z.string().min(1, "Contraseña es requerida"),
 });
 
-export interface LoginActionResult {
-	success: boolean;
+export interface LoginActionResult extends ActionResult {
 	destination?: string;
-	error?: string;
 }
 
 export async function loginAction(
@@ -31,17 +26,11 @@ export async function loginAction(
 		const target = typeof targetRedirect === "string" ? targetRedirect : null;
 		return { success: true, destination: safeRedirect(target, session.role) };
 	} catch (error) {
-		if (
-			error instanceof InvalidCredentialsError ||
-			error instanceof AuthDomainError
-		) {
-			return { success: false, error: error.message };
-		}
-		console.error("[loginAction]", error);
-		return {
-			success: false,
-			error: "No se pudo iniciar sesión. Intenta de nuevo.",
-		};
+		return handleActionError(
+			error,
+			"loginAction",
+			"No se pudo iniciar sesión. Intenta de nuevo.",
+		);
 	}
 }
 
