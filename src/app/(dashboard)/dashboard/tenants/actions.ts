@@ -1,13 +1,16 @@
 "use server";
 
 import { tenantsUseCases } from "@/modules/tenants/infrastructure/composition";
-import { Tenant, CreateTenant } from "@/modules/tenants/domain/tenant.entity";
+import {
+	CreateTenant,
+	TenantPlain,
+} from "@/modules/tenants/domain/tenant.entity";
 import { requireRole } from "@/shared/auth/require-role";
 import { rolesFor } from "@/shared/config/rbac-routes";
 import { handleActionError, ActionResult } from "@/shared/utils/action-error";
 
-export type GetTenantsActionResult = ActionResult<Tenant[]>;
-export type CreateTenantActionResult = ActionResult<Tenant>;
+export type GetTenantsActionResult = ActionResult<TenantPlain[]>;
+export type CreateTenantActionResult = ActionResult<TenantPlain>;
 
 /**
  * Server Action para consultar el listado de empresas desde componentes clientes.
@@ -16,25 +19,9 @@ export type CreateTenantActionResult = ActionResult<Tenant>;
 export async function getTenantsAction(): Promise<GetTenantsActionResult> {
 	try {
 		const tenants = await tenantsUseCases.getTenants();
-		const plainTenants: Tenant[] = tenants.map((t) => ({
-			id: t.id,
-			nitRut: t.nitRut,
-			businessName: t.businessName,
-			tradeName: t.tradeName,
-			address: t.address,
-			phone: t.phone,
-			email: t.email,
-			countryCode: t.countryCode,
-			currencyCode: t.currencyCode,
-			taxRegime: t.taxRegime,
-			isActive: t.isActive,
-			createdAt: t.createdAt,
-			displayName: t.displayName,
-		}));
-
 		return {
 			success: true,
-			data: plainTenants,
+			data: tenants.map((t) => t.toPlain()),
 		};
 	} catch (error) {
 		return handleActionError(
@@ -58,25 +45,9 @@ export async function createTenantAction(
 		await requireRole(rolesFor("/dashboard/tenants"), "/dashboard/tenants");
 
 		const tenant = await tenantsUseCases.createTenant(payload);
-		const plainTenant: Tenant = {
-			id: tenant.id,
-			nitRut: tenant.nitRut,
-			businessName: tenant.businessName,
-			tradeName: tenant.tradeName,
-			address: tenant.address,
-			phone: tenant.phone,
-			email: tenant.email,
-			countryCode: tenant.countryCode,
-			currencyCode: tenant.currencyCode,
-			taxRegime: tenant.taxRegime,
-			isActive: tenant.isActive,
-			createdAt: tenant.createdAt,
-			displayName: tenant.displayName,
-		};
-
 		return {
 			success: true,
-			data: plainTenant,
+			data: tenant.toPlain(),
 		};
 	} catch (error) {
 		return handleActionError(
